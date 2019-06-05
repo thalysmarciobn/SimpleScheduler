@@ -1,6 +1,8 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SimpleScheduler", "SimpleScheduler\SimpleScheduler.csproj", "{A3B7930C-C5BC-4043-B24D-E6C798DF178B}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "source", "source\source.csproj", "{A3B7930C-C5BC-4043-B24D-E6C798DF178B}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "sample", "sample\sample.csproj", "{F25F5D4E-8BAD-4443-893E-0A17FD5B6AD2}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -12,5 +14,9 @@ Global
 		{A3B7930C-C5BC-4043-B24D-E6C798DF178B}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{A3B7930C-C5BC-4043-B24D-E6C798DF178B}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{A3B7930C-C5BC-4043-B24D-E6C798DF178B}.Release|Any CPU.Build.0 = Release|Any CPU
+		{F25F5D4E-8BAD-4443-893E-0A17FD5B6AD2}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{F25F5D4E-8BAD-4443-893E-0A17FD5B6AD2}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{F25F5D4E-8BAD-4443-893E-0A17FD5B6AD2}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{F25F5D4E-8BAD-4443-893E-0A17FD5B6AD2}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 EndGlobal
