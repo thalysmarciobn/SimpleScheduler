@@ -1,5 +1,7 @@
 # SimpleScheduler
 
+[![CodeFactor](https://www.codefactor.io/repository/github/thalysmarciobn/simplescheduler/badge)](https://www.codefactor.io/repository/github/thalysmarciobn/simplescheduler)
+
 Um projeto simples de processamento de taferas em multi threads em queue
 
 ```csharp
