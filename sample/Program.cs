@@ -1,7 +1,7 @@
 ﻿using sample1;
 using SimpleScheduler;
 using System;
-
+using System.Threading;
 
 Console.WriteLine("Test");
 var schedule = new ScheduleManager(1, 500);
