@@ -1,5 +1,3 @@
-using SimpleScheduler.Scheduler;
-
 namespace test
 {
     public class UnitTest1
