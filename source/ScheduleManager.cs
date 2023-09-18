@@ -49,34 +49,54 @@ namespace SimpleScheduler
             _cancellationTokenSource.Dispose();
         }
 
-        private void Execute()
+        private async Task Execute()
         {
             while (Alive)
             {
-                _jobs.List.Where(x => x.State == JobState.Finalizing).ToList().ForEach(x =>
-                {
-                    _jobs.Remove(x);
-                    x.Action.Inmate();
-                });
-                _jobs.List.Where(x => x.State == JobState.Waiting).ToList().ForEach(x =>
-                {
-                    if (x.DateTime > DateTime.Now) return;
-                    Task.Run(async () =>
-                    {
-                        try
-                        {
-                            x.State = JobState.Running;
-                            await x.Action.ExecuteAsync();
-                            x.State = x.Repeat ? JobState.Waiting : JobState.Finalizing;
-                        }
-                        catch (Exception exception)
-                        {
-                            x.Action.OnException(exception);
-                        }
-                    });
-                    if (x.Repeat) x.DateTime = x.DateTime.AddMilliseconds(x.Milliseconds);
-                });
+                ProcessFinalizingJobs();
+                await ProcessWaitingJobsAsync();
                 Thread.Sleep(Timer);
+            }
+        }
+
+        private void ProcessFinalizingJobs()
+        {
+            _jobs.List.RemoveAll(x =>
+            {
+                if (x.State == JobState.Finalizing)
+                {
+                    x.Action.Inmate();
+                    return true;
+                }
+                return false;
+            });
+        }
+
+        private async Task ProcessWaitingJobsAsync()
+        {
+            foreach (var job in _jobs.List.Where(x => x.State == JobState.Waiting && x.DateTime <= DateTime.Now).ToList())
+            {
+                if (job.DateTime > DateTime.Now) return;
+
+                job.FiredException = false;
+
+                try
+                {
+                    job.State = JobState.Running;
+                    await job.Action.ExecuteAsync();
+                    job.State = job.Repeat ? JobState.Waiting : JobState.Finalizing;
+                }
+                catch (Exception exception)
+                {
+                    job.Action.OnException(exception);
+                    job.FiredException = true;
+                }
+
+                if (job.Repeat)
+                {
+                    job.State = JobState.Waiting;
+                    job.DateTime = job.DateTime.AddMilliseconds(job.Milliseconds);
+                }
             }
         }
 

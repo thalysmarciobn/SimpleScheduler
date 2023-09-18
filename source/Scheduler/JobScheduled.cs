@@ -27,6 +27,12 @@ namespace SimpleScheduler.Scheduler
             return this;
         }
 
+        public JobScheduled NotRepeat()
+        {
+            _action.Repeat = false;
+            return this;
+        }
+
         public bool Build()
         {
             lock (_jobList)

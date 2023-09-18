@@ -19,6 +19,8 @@ namespace SimpleScheduler.Scheduler
 
         public bool Repeat { get; set; } = false;
 
+        public bool FiredException { get; set; }
+
         public DateTime DateTime { get; set; }
 
         public JobScheduled JobScheduled { get; }
