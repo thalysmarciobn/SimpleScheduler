@@ -5,9 +5,19 @@ namespace SimpleScheduler.Scheduler
 {
     public class JobList<T>
     {
-        private readonly IList<T> _list = new List<T>();
-        private readonly object _lock = new object();
-        public int Count => _list.Count;
+        private readonly List<T> _list = new();
+        private readonly object _lock = new();
+
+        public int Count
+        {
+            get
+            {
+                lock (_lock)
+                {
+                    return _list.Count;
+                }
+            }
+        }
 
         public bool TryAdd(T item)
         {
@@ -18,7 +28,6 @@ namespace SimpleScheduler.Scheduler
                 return true;
             }
         }
-
 
         public bool Remove(T item)
         {
@@ -36,12 +45,14 @@ namespace SimpleScheduler.Scheduler
             }
         }
 
-
-        public List<T> List()
+        public List<T> List
         {
-            lock (_lock)
+            get
             {
-                return _list.ToList();
+                lock (_lock)
+                {
+                    return new List<T>(_list);
+                }
             }
         }
     }

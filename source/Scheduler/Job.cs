@@ -2,15 +2,11 @@
 
 namespace SimpleScheduler.Scheduler
 {
-    public abstract class Job : IDisposable
+    public abstract record Job
     {
-        public void Dispose()
+        public virtual async Task ExecuteAsync()
         {
-            GC.SuppressFinalize(this);
-        }
-
-        public virtual void Execute()
-        {
+            await Task.CompletedTask;
         }
 
         public virtual void Inmate()

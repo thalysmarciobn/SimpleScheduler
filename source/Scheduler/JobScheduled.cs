@@ -4,49 +4,42 @@ namespace SimpleScheduler.Scheduler
 {
     public class JobScheduled
     {
+        private readonly JobAction _action;
+        private readonly JobList<JobAction> _jobList;
+
         public JobScheduled(JobAction action, JobList<JobAction> jobList)
         {
-            Action = action;
-            List = jobList;
+            _action = action ?? throw new ArgumentNullException(nameof(action));
+            _jobList = jobList ?? throw new ArgumentNullException(nameof(jobList));
         }
 
-        private JobAction Action { get; }
-
-        private JobList<JobAction> List { get; }
-
-        public JobScheduled AddTime(TimeSpan fisrt)
+        public JobScheduled AddTime(TimeSpan timeSpan)
         {
-            Action.Milliseconds += (int) fisrt.TotalMilliseconds;
-            Action.AddMilliseconds((int) fisrt.TotalMilliseconds);
-            return this;
-        }
-
-        public JobScheduled AddTime(TimeSpan fisrt, TimeSpan second)
-        {
-            Action.Milliseconds += (int) second.TotalMilliseconds;
-            Action.AddMilliseconds((int) fisrt.TotalMilliseconds);
+            int milliseconds = (int)timeSpan.TotalMilliseconds;
+            _action.Milliseconds += milliseconds;
+            _action.AddMilliseconds(milliseconds);
             return this;
         }
 
         public JobScheduled Repeat()
         {
-            Action.Repeat = true;
+            _action.Repeat = true;
             return this;
         }
 
         public bool Build()
         {
-            lock (List)
+            lock (_jobList)
             {
-                return List.TryAdd(Action);
+                return _jobList.TryAdd(_action);
             }
         }
 
         public bool Remove()
         {
-            lock (List)
+            lock (_jobList)
             {
-                return List.Remove(Action);
+                return _jobList.Remove(_action);
             }
         }
     }
